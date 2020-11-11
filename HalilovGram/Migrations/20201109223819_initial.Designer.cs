@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HalilovGram.Migrations
 {
     [DbContext(typeof(HalilovGramContext))]
-    [Migration("20201109193334_initial")]
+    [Migration("20201109223819_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,10 @@ namespace HalilovGram.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SecondName")
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

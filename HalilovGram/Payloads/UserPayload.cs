@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HalilovGram.Entities.Models
+namespace HalilovGram.Payloads
 {
-    public class User
+    public class UserPayload
     {
-        public int Id { get; set; }
-
+        public int? Id { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -16,7 +15,5 @@ namespace HalilovGram.Entities.Models
         public string Email { get; set; }
         
         public string Gender { get; set; }
-        
-        public List<Post> Posts { get; set; }
     }
 }
