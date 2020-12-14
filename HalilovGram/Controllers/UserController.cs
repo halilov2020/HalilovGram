@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using HalilovGram.Entities;
 using HalilovGram.Entities.Models;
 using HalilovGram.Payloads;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using BC = BCrypt.Net.BCrypt;
 
 namespace HalilovGram.Controllers
 {
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private HalilovGramContext _db;
@@ -32,7 +35,7 @@ namespace HalilovGram.Controllers
             {
                 return _db.Users.Single(user => Id == user.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             }
@@ -48,12 +51,13 @@ namespace HalilovGram.Controllers
                     FirstName = payload.FirstName,
                     LastName = payload.LastName,
                     Email = payload.Email,
+                    PasswordHash = BC.HashPassword(payload.Password),
                     Gender = payload.Gender
                 };
                 _db.Users.Add(userToAdd);
                 _db.SaveChanges();
                 return Ok(userToAdd);
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
@@ -70,6 +74,7 @@ namespace HalilovGram.Controllers
                     userToUpdate.FirstName = payload.FirstName;
                     userToUpdate.LastName = payload.LastName;
                     userToUpdate.Email = payload.Email;
+                    userToUpdate.PasswordHash = BC.HashPassword(payload.Password);
                     userToUpdate.Gender = payload.Gender;
 
                     _db.SaveChanges();
