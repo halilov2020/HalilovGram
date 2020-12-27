@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/HalilovGram/Resources/Images/Posts
+/HalilovGram/Migrations/20201227151854_initial.cs
+/HalilovGram/Migrations/20201227151854_initial.Designer.cs
+/HalilovGram/Migrations/20201227170356_Users.cs
+/HalilovGram/Migrations/20201227170356_Users.Designer.cs

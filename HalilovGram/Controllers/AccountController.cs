@@ -10,6 +10,7 @@ using HalilovGram.Entities;
 using HalilovGram.Entities.Models;
 using HalilovGram.Payloads;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ namespace HalilovGram.Controllers
 {
     //[Route("api/[controller]")]
     //[ApiController]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private IConfiguration _config { get; }
@@ -30,7 +32,6 @@ namespace HalilovGram.Controllers
             _db = db;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public IActionResult Register([FromBody] RegisterPayload registerPayload)
         {
@@ -52,7 +53,8 @@ namespace HalilovGram.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { status = false, message = "User with this email exist!" });
+                    //return BadRequest(new { status = false, message = "User with this email exist!" });
+                    return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
             }
             catch
@@ -60,23 +62,30 @@ namespace HalilovGram.Controllers
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             }
         }
-        [AllowAnonymous]
+
         [HttpPost]
         public IActionResult Login([FromBody] LoginPayload loginPayload)
         {
-            var foundUser = _db.Users.SingleOrDefault(u => u.Email == loginPayload.Email);
-            if (foundUser != null)
+            try
             {
-                if (BC.Verify(loginPayload.Password, foundUser.PasswordHash))
+                var foundUser = _db.Users.SingleOrDefault(u => u.Email == loginPayload.Email);
+                if (foundUser != null)
                 {
-                    string tokenString = GenerateJSONWebToken(foundUser);
-                    return Ok(new { status = true, token = tokenString});
+                    if (BC.Verify(loginPayload.Password, foundUser.PasswordHash))
+                    {
+                        string tokenString = GenerateJSONWebToken(foundUser);
+                        return Ok(new { status = true, token = tokenString });
+                    }
+                    return BadRequest(new { status = false, message = "Wrong password or email!" });
                 }
-                return BadRequest(new { status = false, message = "Wrong password or email!" });
+                else
+                {
+                    return BadRequest(new { status = false, message = "No user with this email found!" });
+                }
             }
-            else
+            catch (Exception)
             {
-                return BadRequest(new { status = false, message = "No user with this email found!" });
+                return BadRequest(new { status = false, message = "Error!"});
             }
         }
 
@@ -86,7 +95,8 @@ namespace HalilovGram.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("id", user.Id.ToString())
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
