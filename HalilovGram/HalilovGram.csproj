@@ -33,6 +33,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201227231507_initial.cs" />
+    <Compile Remove="Migrations\20201227231507_initial.Designer.cs" />
+    <Compile Remove="Migrations\20201227232009_initial.cs" />
+    <Compile Remove="Migrations\20201227232009_initial.Designer.cs" />
+    <Compile Remove="Migrations\20201227232236_initial.cs" />
+    <Compile Remove="Migrations\20201227232236_initial.Designer.cs" />
+    <Compile Remove="Migrations\20201227232254_initial.cs" />
+    <Compile Remove="Migrations\20201227232254_initial.Designer.cs" />
+    <Compile Remove="Migrations\20201228143455_followers.cs" />
+    <Compile Remove="Migrations\20201228143455_followers.Designer.cs" />
+    <Compile Remove="Migrations\20201228145524_followers.cs" />
+    <Compile Remove="Migrations\20201228145524_followers.Designer.cs" />
+    <Compile Remove="Migrations\20201228152246_ll.cs" />
+    <Compile Remove="Migrations\20201228152246_ll.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Resources\Images\Avatars\" />
     <Folder Include="Resources\Images\Posts\" />
   </ItemGroup>

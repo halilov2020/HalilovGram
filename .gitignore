@@ -343,3 +343,8 @@ healthchecksdb
 /HalilovGram/Migrations/20201227151854_initial.Designer.cs
 /HalilovGram/Migrations/20201227170356_Users.cs
 /HalilovGram/Migrations/20201227170356_Users.Designer.cs
+/HalilovGram/Migrations/20201228103406_initial.cs
+/HalilovGram/Migrations/20201228150540_followers.cs
+/HalilovGram/Migrations/20201228103406_initial.Designer.cs
+/HalilovGram/Migrations/20201228150540_followers.Designer.cs
+*.cs

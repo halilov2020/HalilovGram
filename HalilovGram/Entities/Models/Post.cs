@@ -15,5 +15,6 @@ namespace HalilovGram.Entities.Models
         public int Likes { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public List<Like> UsersLiked { get; set; }
     }
 }

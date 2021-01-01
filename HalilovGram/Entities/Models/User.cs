@@ -12,12 +12,14 @@ namespace HalilovGram.Entities.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string ImgUrl { get; set;  }
-        public int Age { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PasswordHash { get; set; }
         public string Gender { get; set; }
         public List<Post> Posts { get; set; }
+        public List<Follow> FollowsUsers { get; set; }
+        public List<Follow> FollowedUsers { get; set; }
+        public List<Like> LikedPosts { get; set; }
     }
 }

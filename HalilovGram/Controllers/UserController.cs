@@ -43,7 +43,6 @@ namespace HalilovGram.Controllers
                     LastName = u.LastName,
                     Email = u.Email,
                     ImgUrl = u.ImgUrl,
-                    Age = u.Age,
                     City = u.City,
                     Country = u.Country,
                     DateOfBirth = u.DateOfBirth,

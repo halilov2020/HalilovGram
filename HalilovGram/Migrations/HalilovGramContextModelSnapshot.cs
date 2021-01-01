@@ -19,6 +19,53 @@ namespace HalilovGram.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HalilovGram.Entities.Models.Follow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateOfFollow")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FollowedById")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FollowsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowedById");
+
+                    b.HasIndex("FollowsId");
+
+                    b.ToTable("Follows");
+                });
+
+            modelBuilder.Entity("HalilovGram.Entities.Models.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("HalilovGram.Entities.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -58,9 +105,6 @@ namespace HalilovGram.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -91,6 +135,36 @@ namespace HalilovGram.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HalilovGram.Entities.Models.Follow", b =>
+                {
+                    b.HasOne("HalilovGram.Entities.Models.User", "FollowedBy")
+                        .WithMany("FollowedUsers")
+                        .HasForeignKey("FollowedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HalilovGram.Entities.Models.User", "Follows")
+                        .WithMany("FollowsUsers")
+                        .HasForeignKey("FollowsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HalilovGram.Entities.Models.Like", b =>
+                {
+                    b.HasOne("HalilovGram.Entities.Models.Post", "Post")
+                        .WithMany("UsersLiked")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HalilovGram.Entities.Models.User", "User")
+                        .WithMany("LikedPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HalilovGram.Entities.Models.Post", b =>
