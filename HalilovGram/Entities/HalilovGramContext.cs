@@ -11,8 +11,10 @@ namespace HalilovGram.Entities
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostLike> PostLikes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<Follow> Follows { get; set; }
-        public DbSet<Like> Likes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,9 +26,20 @@ namespace HalilovGram.Entities
             modelBuilder.Entity<User>()
                 .HasMany(x => x.FollowedUsers)
                 .WithOne(f => f.FollowedBy)
-                .HasForeignKey(k => k.FollowedById);
+                .HasForeignKey(k => k.FollowedById)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<User>()
                 .HasMany(x => x.LikedPosts)
+                .WithOne(u => u.User)
+                .HasForeignKey(k => k.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.Comments)
+                .WithOne(u => u.User)
+                .HasForeignKey(k => k.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.LikedComments)
                 .WithOne(u => u.User)
                 .HasForeignKey(k => k.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

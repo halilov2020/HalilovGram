@@ -29,20 +29,19 @@ namespace HalilovGram.Controllers
         {
             try
             {
-                var result = _db.Posts.Join(    // first set
-                _db.Users,                      // second set
-                p => p.UserId,                  // selector property of object from first set
-                u => u.Id,                      // selector property of object from second set
-                (p, u) => new FeedPost          // creating new type of join set
-                {                               // finall fields of a new set
-                    Id = p.Id,
-                    Title = p.Title,
-                    Text = p.Text,
-                    ImgUrl = p.ImgUrl,
-                    Likes = p.Likes,
-                    Date = p.Date,
-                    Author = u.FirstName + " " + u.LastName
-                }).AsNoTracking();
+                var result = _db.Posts
+                    .Include(u => u.User)
+                    .Select(p => new FeedPost
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Text = p.Text,
+                        ImgUrl = p.ImgUrl,
+                        Likes = p.Likes,
+                        Date = p.Date,
+                        Author = p.User.FirstName + " " + p.User.LastName
+                    })
+                    .AsNoTracking();
 
                 switch (sortType)
                 {
@@ -70,12 +69,42 @@ namespace HalilovGram.Controllers
                 return StatusCode(500, $"Internal server error {ex}");
             }
         }
+        [HttpGet]
+        public ActionResult<FeedPost> GetPostById(int postId)
+        {
+            try
+            {
+                var post = _db.Posts
+                    .Include(u => u.User)
+                    .SingleOrDefault(p => p.Id == postId);
 
+                if(post != null)
+                {
+                    FeedPost feedPost = new FeedPost
+                    {
+                        Id = post.Id,
+                        Title = post.Title,
+                        Text = post.Text,
+                        ImgUrl = post.ImgUrl,
+                        Likes = post.Likes,
+                        Date = post.Date,
+                        Author = post.User.FirstName + " " + post.User.LastName
+                    };
+
+                    return feedPost;
+                }
+                return StatusCode(204, "No content");
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error {ex}");
+            }
+        }
         [HttpPost]
-        public ActionResult<Post> CreatePost([FromBody] PostPayload payload)
+        public IActionResult CreatePost([FromBody] PostPayload payload)
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
-            var token = authorization[authorization.Length - 1];
+            var token = authorization[1];
             var id = ((JwtSecurityToken) new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
             try
             {
@@ -136,28 +165,30 @@ namespace HalilovGram.Controllers
         public IActionResult Like(int postId)
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
-            String token = authorization[authorization.Length - 1];
-            var userId = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
+            String token = authorization[1];
+            String userId = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
             try
             {
-                var likeExists = _db.Likes.Where(l => l.PostId == postId && l.UserId == Int32.Parse(userId));
+                var likeExists = _db.PostLikes.SingleOrDefault(l => l.PostId == postId && l.UserId == Int32.Parse(userId));
                 if (likeExists == null)
                 {
-                    var like = new Like
+                    var like = new PostLike
                     {
                         PostId = postId,
                         UserId = Int32.Parse(userId),
                     };
-                    _db.Likes.Add(like);
+                    _db.PostLikes.Add(like);
+                    var numLikes = ++_db.Posts.Single(p => p.Id == postId).Likes;
                     _db.SaveChanges();
 
-                    return Ok(new { message = "like success" });
+                    return Ok(new { message = "like success", numLikes});
                 }
                 else
                 {
-                    _db.Likes.Remove((Like)likeExists);
+                    _db.PostLikes.Remove(likeExists);
+                    var numLikes = --_db.Posts.Single(p => p.Id == postId).Likes;
                     _db.SaveChanges();
-                    return Ok(new { message = "like deleted" });
+                    return Ok(new { message = "like deleted", numLikes });
                 }
 
             }
@@ -171,11 +202,11 @@ namespace HalilovGram.Controllers
         public IActionResult IsLiked(int postId)
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
-            String token = authorization[authorization.Length - 1];
-            var userId = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
+            String token = authorization[1];
+            String userId = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
             try
             {
-                var likeExists = _db.Likes.Where(l => l.PostId == postId && l.UserId == Int32.Parse(userId));
+                var likeExists = _db.PostLikes.SingleOrDefault(l => l.PostId == postId && l.UserId == Int32.Parse(userId));
                 if (likeExists == null)
                 {
                     return Ok(new { isLiked = false });
@@ -190,20 +221,6 @@ namespace HalilovGram.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
-        }
-        
-        [HttpGet]
-        public IActionResult NumLikes(int postId)
-        {
-           try
-           {
-               var numLikes = _db.Likes.Where(l => l.PostId == postId).Count();
-               return Ok(new { numLikes });
-           }
-           catch (Exception ex)
-           {
-               return StatusCode(500, $"Internal server error: {ex}");
-           }
         }
     }
 }

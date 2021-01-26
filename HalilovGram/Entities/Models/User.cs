@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HalilovGram.Entities.Models
 {
@@ -20,6 +18,8 @@ namespace HalilovGram.Entities.Models
         public List<Post> Posts { get; set; }
         public List<Follow> FollowsUsers { get; set; }
         public List<Follow> FollowedUsers { get; set; }
-        public List<Like> LikedPosts { get; set; }
+        public List<PostLike> LikedPosts { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<CommentLike> LikedComments { get; set; }
     }
 }

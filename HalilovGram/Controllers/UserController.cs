@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using HalilovGram.Entities;
 using HalilovGram.Entities.Models;
 using HalilovGram.Payloads;
@@ -12,7 +11,6 @@ using HalilovGram.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using BC = BCrypt.Net.BCrypt;
 
 namespace HalilovGram.Controllers
@@ -125,8 +123,8 @@ namespace HalilovGram.Controllers
         public IActionResult UploadAvatar()
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
-            var token = authorization[authorization.Length - 1];
-            var id = ((JwtSecurityToken) new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
+            String token = authorization[authorization.Length - 1];
+            String id = ((JwtSecurityToken) new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
             try
             {
                var selectedUser = _db.Users.Single(u => u.Id == Int32.Parse(id));
@@ -160,6 +158,21 @@ namespace HalilovGram.Controllers
                     return BadRequest();
                 }
             } catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error {ex}");
+            }
+        }
+        public IActionResult GetUserAvatar()
+        {
+            String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
+            String token = authorization[authorization.Length - 1];
+            String id = ((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value;
+            try
+            {
+                var selectedUser = _db.Users.SingleOrDefault(u => u.Id == Int32.Parse(id));
+                return Ok(new { selectedUser.ImgUrl });
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error {ex}");
             }

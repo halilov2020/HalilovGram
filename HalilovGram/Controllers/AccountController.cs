@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using HalilovGram.Entities;
 using HalilovGram.Entities.Models;
 using HalilovGram.Payloads;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using BC = BCrypt.Net.BCrypt;
+
 namespace HalilovGram.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
     [AllowAnonymous]
     public class AccountController : ControllerBase
     {
