@@ -54,28 +54,6 @@ namespace HalilovGram.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User> Create([FromBody] UserPayload payload)
-        {
-            try
-            {
-                var userToAdd = new User
-                {
-                    FirstName = payload.FirstName,
-                    LastName = payload.LastName,
-                    Email = payload.Email,
-                    PasswordHash = BC.HashPassword(payload.Password),
-                    Gender = payload.Gender
-                };
-                _db.Users.Add(userToAdd);
-                _db.SaveChanges();
-                return Ok(userToAdd);
-            } catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [HttpPost]
         public ActionResult<User> Update([FromBody] UserPayload payload)
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
@@ -104,21 +82,6 @@ namespace HalilovGram.Controllers
             }
         }
         
-        [HttpDelete]
-        public ActionResult Delete(int Id)
-        {
-            try
-            {
-                var userToDelete = _db.Users.Single(user => user.Id == Id);
-                _db.Users.Remove(userToDelete);
-                _db.SaveChanges();
-                return Ok(new { status=true });
-            }
-            catch (Exception)
-            {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            }
-        }
         [HttpPost]
         public IActionResult UploadAvatar()
         {
@@ -162,6 +125,7 @@ namespace HalilovGram.Controllers
                 return StatusCode(500, $"Internal server error {ex}");
             }
         }
+        [HttpGet]
         public IActionResult GetUserAvatar()
         {
             String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
@@ -175,6 +139,27 @@ namespace HalilovGram.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error {ex}");
+            }
+        }
+        [HttpDelete]
+        public ActionResult DeleteAccount()
+        {
+            String[] authorization = Request.Headers["authorization"].ToString().Split(" ");
+            String token = authorization[authorization.Length - 1];
+            int id = Int32.Parse(((JwtSecurityToken)new JwtSecurityTokenHandler().ReadToken(token)).Claims.First(claim => claim.Type == "id").Value);
+            try
+            {
+                _db.Users.Find(id).IsDeleted = true;
+                _db.Comments.Where(u => u.UserId == id).ToList().ForEach(u => u.IsDeleted = true);
+                _db.Follows.Where(u => u.FollowedById == id).ToList().ForEach(u => u.IsDeleted = true);
+                _db.Follows.Where(u => u.FollowsId == id).ToList().ForEach(u => u.IsDeleted = true);
+                _db.Posts.Where(u => u.UserId == id).ToList().ForEach(u => u.IsDeleted = true);
+                _db.SaveChanges();
+                return Ok(new { status = true });
+            }
+            catch (Exception)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
     }

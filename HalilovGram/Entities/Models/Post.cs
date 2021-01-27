@@ -11,6 +11,7 @@ namespace HalilovGram.Entities.Models
         public string ImgUrl { get; set; }
         public DateTime Date { get;set; }
         public int Likes { get; set; }
+        public bool IsDeleted { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public List<PostLike> UsersLiked { get; set; }

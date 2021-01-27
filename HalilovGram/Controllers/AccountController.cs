@@ -41,14 +41,14 @@ namespace HalilovGram.Controllers
                         LastName = registerPayload.LastName,
                         Email = registerPayload.Email,
                         PasswordHash = BC.HashPassword(registerPayload.Password),
-                        Gender = registerPayload.Gender
+                        Gender = registerPayload.Gender,
+                        IsDeleted = false
                     });
                     _db.SaveChanges();
                     return Ok(new { status = true, message = "User was registered with success!" });
                 }
                 else
                 {
-                    //return BadRequest(new { status = false, message = "User with this email exist!" });
                     return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
             }

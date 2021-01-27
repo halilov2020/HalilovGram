@@ -18,6 +18,13 @@ namespace HalilovGram.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<Comment>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<CommentLike>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<Follow>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<Post>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<PostLike>().HasQueryFilter(u => !u.IsDeleted);
+
             modelBuilder.Entity<User>()
                 .HasMany(x => x.FollowsUsers)
                 .WithOne(f => f.Follows)

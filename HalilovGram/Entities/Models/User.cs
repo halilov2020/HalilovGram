@@ -15,6 +15,7 @@ namespace HalilovGram.Entities.Models
         public DateTime DateOfBirth { get; set; }
         public string PasswordHash { get; set; }
         public string Gender { get; set; }
+        public bool IsDeleted { get; set; }
         public List<Post> Posts { get; set; }
         public List<Follow> FollowsUsers { get; set; }
         public List<Follow> FollowedUsers { get; set; }
