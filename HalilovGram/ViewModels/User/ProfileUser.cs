@@ -13,5 +13,7 @@ namespace HalilovGram.ViewModels.User
         public string Country { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
+        public int Followed { get; set; }
+        public int Follows { get; set; }
     }
 }

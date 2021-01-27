@@ -11,6 +11,8 @@ using HalilovGram.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static HalilovGram.Enums;
 using BC = BCrypt.Net.BCrypt;
 
 namespace HalilovGram.Controllers
@@ -25,17 +27,15 @@ namespace HalilovGram.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetAll()
-        {
-            return _db.Users.ToList();
-        }
-
-        [HttpGet]
-        public ActionResult<ProfileUser> GetById(int Id)
+        public ActionResult<List<ProfileUser>> GetUsers(int pageNumber, int pageSize, UserSortType sortType)
         {
             try
             {
-                return _db.Users.Where(user => Id == user.Id).Select(u => new ProfileUser {
+                var result = _db.Users
+                .Include(f => f.FollowedUsers)
+                .Include(f => f.FollowsUsers)
+                .Select(u => new ProfileUser
+                {
                     Id = u.Id,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
@@ -44,7 +44,51 @@ namespace HalilovGram.Controllers
                     City = u.City,
                     Country = u.Country,
                     DateOfBirth = u.DateOfBirth,
-                    Gender = u.Gender
+                    Gender = u.Gender,
+                    Followed = u.FollowedUsers.Count(),
+                    Follows = u.FollowsUsers.Count()
+                }).AsNoTracking();
+
+                switch (sortType)
+                {
+                    case UserSortType.POPULAR_ASCENDING:
+                        result = result.OrderBy(p => p.Follows);
+                        break;
+                    case UserSortType.POPULAR_DESCENDING:
+                        result = result.OrderByDescending(p => p.Follows);
+                        break;
+                }
+
+                result = result
+                    .Skip(pageNumber * pageSize)
+                    .Take(pageSize);
+                return result.ToList();
+            }catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error {ex}");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<ProfileUser> GetById(int Id)
+        {
+            try
+            {
+                return _db.Users
+                    .Include(u => u.FollowedUsers)
+                    .Include(u => u.FollowsUsers)
+                    .Where(user => Id == user.Id).Select(u => new ProfileUser {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    ImgUrl = u.ImgUrl,
+                    City = u.City,
+                    Country = u.Country,
+                    DateOfBirth = u.DateOfBirth,
+                    Gender = u.Gender,
+                    Followed = u.FollowedUsers.Count(),
+                    Follows = u.FollowsUsers.Count()
                 }).Single();
             }
             catch (Exception)

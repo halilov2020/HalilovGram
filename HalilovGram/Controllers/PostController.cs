@@ -69,6 +69,52 @@ namespace HalilovGram.Controllers
                 return StatusCode(500, $"Internal server error {ex}");
             }
         }
+        public ActionResult<List<FeedPost>> GetMyPosts(int pageSize, int pageNumber, FeedSortType sortType, int userId)
+        {
+            try
+            {
+                var result = _db.Posts
+                    .Include(u => u.User)
+                    .Where(u => u.User.Id == userId)
+                    .Select(p => new FeedPost
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Text = p.Text,
+                        ImgUrl = p.ImgUrl,
+                        Likes = p.Likes,
+                        Date = p.Date,
+                        Author = p.User.FirstName + " " + p.User.LastName
+                    })
+                    .AsNoTracking();
+
+                switch (sortType)
+                {
+                    case FeedSortType.POPULAR_ASCENDING:
+                        result = result.OrderBy(p => p.Likes);
+                        break;
+                    case FeedSortType.POPULAR_DESCENDING:
+                        result = result.OrderByDescending(p => p.Likes);
+                        break;
+                    case FeedSortType.NEWEST_ASCENDING:
+                        result = result.OrderBy(p => p.Date);
+                        break;
+                    case FeedSortType.NEWEST_DESCENDING:
+                        result = result.OrderByDescending(p => p.Date);
+                        break;
+
+                }
+
+                result = result
+                    .Skip(pageNumber * pageSize)
+                    .Take(pageSize);
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error {ex}");
+            }
+        }
         [HttpGet]
         public ActionResult<FeedPost> GetPostById(int postId)
         {
