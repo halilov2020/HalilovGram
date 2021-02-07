@@ -1,0 +1,28 @@
+
+.profile-edit-page{
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px;
+}
+.profile-edit-form {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 20px;
+    row-gap: 10px;
+    margin-bottom: 15px;
+}
+.profile-edit-page-title {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    border-bottom: 1px solid lightgray;
+    padding: 0 0 10px 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.submit-div {
+    display: flex;
+    justify-content: center;
+}
+.edit-label {
+    text-align: right;
+}

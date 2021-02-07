@@ -1,0 +1,9 @@
+<div class="sort-types">
+    <div class="popular type" (click)="sortPopular()">
+        Popular
+        <span *ngIf="sortType == 0"> &#8593; </span>
+        <span *ngIf="sortType == 1"> &#8595; </span>
+    </div>
+</div>
+<app-user-card *ngFor="let user of users" [user]="user"></app-user-card>
+<button class="btn btn-success" (click)="loadMore()">Load More</button>

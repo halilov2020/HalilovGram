@@ -1,0 +1,32 @@
+<div class="card" *ngIf="success">
+  <div class="card-body">
+    <h3 class="full-name">{{ user.firstName + " " + user.lastName }}</h3>
+    <img class="profile-avatar"[src]="getImgUrl()">
+    <div class="email">Email: {{ user.email }}</div>
+    <div class="gender">Gender: {{ user.gender }}</div>
+    <div class="age" *ngIf="user.age">Age: {{ user.age }}</div>
+    <div class="city" *ngIf="user.city">City: {{ user.city }}</div>
+    <div class="country" *ngIf="user.country">Country: {{ user.country }}</div>
+    <div class="followed" *ngIf="user.followed">Followed: {{ user.followed }}</div>
+    <div class="follows" *ngIf="user.follows">Follows: {{ user.follows }}</div>
+    <button class="btn btn-success submit" [routerLink]="'/edit'" *ngIf="isMyAccount">Edit</button>
+    <button class="btn btn-success" *ngIf="!isMyAccount && !isUserSubscribed" (click)="follow()">Follow</button>
+    <button class="btn btn-danger" *ngIf="!isMyAccount && isUserSubscribed" (click)="unfollow()">Unfollow</button>
+  </div>
+</div>
+<div class="user-posts" *ngIf="postsNumber">
+  <div class="sort-types">
+      <div class="newest type" (click)="sortNewest()">
+          Newest 
+          <span *ngIf="sortType == 2"> &#8593; </span>
+          <span *ngIf="sortType == 3"> &#8595; </span>
+      </div>
+      <div class="popular type" (click)="sortPopular()">
+          Popular
+          <span *ngIf="sortType == 0"> &#8593; </span>
+          <span *ngIf="sortType == 1"> &#8595; </span>
+      </div>
+  </div>
+  <app-profile-user-post *ngFor="let userPost of userPosts" [userPost]="userPost"></app-profile-user-post>
+  <button class="btn btn-success" (click)="loadMore()">Load More</button>
+</div>

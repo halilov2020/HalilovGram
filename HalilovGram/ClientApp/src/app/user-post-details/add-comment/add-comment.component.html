@@ -1,0 +1,9 @@
+<div class="add-comment">
+    <div class="comment-body">
+        <img [src]="getUserAvatar()" class="avatar">
+        <form [formGroup]="addCommentForm">
+            <textarea class="textarea" formControlName="comment" required></textarea>
+        </form>
+    </div>
+    <button type="submit" class="btn btn-primary submit" (click)="submit()">Submit</button>
+</div>

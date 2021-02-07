@@ -1,0 +1,18 @@
+<div class="comment">
+    <div class="comment-header">
+        <img [src]="getImgUrl()" class="avatar">
+        <div class="username">{{comment.author}}</div>
+        <div class="date">• {{comment.date | timePassed}}</div>
+    </div>
+    <hr>
+    <div class="comment-body">
+        <div class="comment-text">{{comment.text}}</div>
+    </div>
+    <hr>
+    <div class="comment-footer">
+        <i class="far fa-heart fa-2x" (click)="likeComment()" *ngIf="!isLiked; else notLiked"></i>
+        <ng-template #notLiked><i class="fas fa-heart fa-2x like-true" (click)="likeComment()"></i></ng-template>
+        <span class="not-liked-span-num" *ngIf="!isLiked; else notLikedSpan">{{ comment.likes?comment.likes:null }}</span>
+        <ng-template #notLikedSpan><span class="liked-span-num" >{{ comment.likes?comment.likes:null }}</span></ng-template>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="new-post-page">
+    <div class="new-post-title">
+        <h2>New Post</h2>
+        <hr>
+    </div>
+    <form class="new-post-form" [formGroup]="newPostForm">
+        <div class="post-group">
+            <label class="new-post-label">Title:</label>
+            <input type="text" class="form-control" formControlName="postTitle">
+        </div>
+        <div class="post-group">
+            <label class="new-post-label" >Image:</label>
+            <input class="form-control" type="file" accept="image/png, image/jpeg" (change)="onChanged($event)">
+        </div>
+        <div class="post-group">
+            <label class="new-post-label">Text:</label>
+            <textarea class="form-control" rows="10" formControlName="postText"></textarea>
+        </div>
+    </form>
+    <div class="button-div">
+        <button type="submit" class="btn btn-success" (click)="onSubmit()">Submit</button>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-body">
+      <div class="body">
+        <h5 class="card-title">{{userPost.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">By: {{userPost.author}}</h6>
+        <img class="user-post-image" *ngIf="userPost.imgUrl" [src]="getImgUrl()">
+        <p class="card-text">{{userPost.text}}</p>
+        <button class="btn btn-dark btn-more" (click)="showUserPostDetails()">Read more</button>
+        <div class="likes">
+          <i class="far fa-heart fa-2x" (click)="likePost()" *ngIf="!isLiked; else notLiked"></i>
+          <ng-template #notLiked><i class="fas fa-heart fa-2x like-true" (click)="likePost()"></i></ng-template>
+          <span class="not-liked-span-num" *ngIf="!isLiked; else notLikedSpan">{{ userPost.likes?userPost.likes:null }}</span>
+          <ng-template #notLikedSpan><span class="liked-span-num" >{{ userPost.likes?userPost.likes:null }}</span></ng-template>
+        </div>
+      </div>
+    </div>
+  </div>

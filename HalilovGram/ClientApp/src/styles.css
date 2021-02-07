@@ -1,16 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+/* 
+#28A745 - green success button
+#218838 - green success button hover
+*/
+@import '~@angular/material/prebuilt-themes/purple-green.css';
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.header{
+    background-color: lightgreen;
 }
-
-code {
-  color: #e01a76;
+.header-layout{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 1000px;
+    margin: 0px auto;
 }
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.page {
+    display: flex;
+    justify-content: center;
+    background-color: #EDEEF0;
+    min-height: 93vh;
+    height:auto;
+}
+.page-layout {
+    display: flex;
+    margin: 20px 0px;
+    width: 1000px;
+}
+.menu-layout {
+    width: 200px;
+    margin-right: 10px;
+}
+.content-layout {
+    width: 800px;
 }

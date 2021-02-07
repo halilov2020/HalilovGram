@@ -1,0 +1,18 @@
+<div class="header-layout">
+  <div class="left">
+    <a class="logo-title" href="feed">MyGram</a>
+  </div>
+  <div class="right">
+    <ul class="list-inline">
+      <li [routerLink]="'auth/register'" *ngIf="!token">
+        Register
+      </li>
+      <li [routerLink]="'auth/login'" *ngIf="!token">
+        Login
+      </li>
+      <li *ngIf="token" (click)="profileExit()">
+        Exit
+      </li>
+    </ul>
+  </div>
+</div>

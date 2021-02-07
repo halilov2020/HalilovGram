@@ -1,0 +1,39 @@
+<div class="content-layout">
+    <div class="profile-edit-page">
+      <form [formGroup]="editForm" class="profile-edit-form">
+        <div class="profile-edit-page-title">Edit page</div>
+        
+        <label class="edit-label">First name:</label>
+        <input type="text" class="form-control" formControlName="firstName">
+    
+        <label class="edit-label">Last name:</label>
+        <input type="text" class="form-control" formControlName="lastName">
+
+        <label class="edit-label">Email:</label>
+        <input type="email" class="form-control" formControlName="email">
+    
+        <label class="edit-label">Gender:</label>
+        <select name="gender" class="form-control" formControlName="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+    
+        <label class="edit-label">Date of birth:</label>
+        <input type="text" class="form-control" placeholder="dd/mm/yyyy" formControlName="dateOfBirth">
+    
+        <label class="edit-label">City:</label>
+        <input type="text" class="form-control" formControlName="city">
+    
+        <label class="edit-label">Country:</label>
+        <input type="text" class="form-control" formControlName="country">
+
+        
+        <label class="edit-label" >Image:</label>
+        <input type="file" class="form-control" accept="image/png, image/jpeg" (change)="onChanged($event)">
+        
+    </form>
+      <div class="submit-div">
+        <button class="btn btn-success submit" (click)="submit()">Submit</button>
+      </div>
+    </div>
+</div>

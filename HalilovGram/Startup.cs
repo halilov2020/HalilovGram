@@ -33,7 +33,8 @@ namespace HalilovGram
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                    //builder.WithOrigins("https://31.31.196.61").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("https://localhost:4200").AllowAnyHeader().AllowAnyMethod();
                 });
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -50,7 +51,7 @@ namespace HalilovGram
                 };
             });
             services.AddAuthorization();
-            services.AddDbContext<HalilovGramContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HalilovGrammConnectionString")));
+            services.AddDbContext<HalilovGramContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LocalSqlServer")));
 
             services.Configure<FormOptions>(o =>
             {

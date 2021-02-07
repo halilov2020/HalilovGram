@@ -1,0 +1,32 @@
+.user-post-image {
+    height: 200px;
+    width: 200px;
+}
+.card {
+    width: 400px;
+    margin: 15px;
+}
+.card-body {
+    display:flex;
+    justify-content: center;
+}
+.like-true {
+    color: red;
+}
+.not-liked-span-num {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.liked-span-num {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    color:red;
+}
+.likes {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 10px;
+}

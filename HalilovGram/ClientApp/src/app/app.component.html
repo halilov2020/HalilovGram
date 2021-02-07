@@ -1,6 +1,14 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
-    <router-outlet></router-outlet>
-  </div>
-</body>
+<app-loader></app-loader>
+<div class="header">
+  <app-header></app-header>
+</div>
+<div class="page">
+    <div class="page-layout">
+      <div class="menu-layout">
+        <app-nav-menu></app-nav-menu>
+      </div>
+        <div class="content-layout">
+          <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.new-post-title h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.new-post-page {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+}
+.post-group {
+    display: grid;
+    grid-template-columns: 30% 65%;
+    column-gap: 5%;
+    margin-bottom: 15px;
+}
+.new-post-label {
+    text-align: right;
+}
+.button-div {
+    display: flex;
+    justify-content: center;
+}

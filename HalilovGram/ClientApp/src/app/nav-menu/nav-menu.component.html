@@ -1,44 +1,32 @@
-<header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">HalilovGram</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
+<div class="menu">
+  <ol class="menu-ol" *ngIf="token">
+    <li class="menu-item" (click)="gotoMyProfile()">
+        <i class="fas fa-user fa-2x"></i>
+        <span class="menu-item-text">My Profile</span>
+    </li>
+    <li class="menu-item" [routerLink]="'new-post'">
+        <i class="fas fa-plus-circle fa-2x"></i>
+        <span class="menu-item-text">New post</span>
+    </li>
+    <li class="menu-item" [routerLink]="'users'">
+        <i class="fas fa-users fa-2x"></i>
+        <span class="menu-item-text">Users</span>
+    </li>
+    <li class="menu-item" [routerLink]="'feed'">
+        <i class="fas fa-newspaper fa-2x"></i>
+        <span class="menu-item-text">Feed</span>
+    </li>
+    <li class="menu-item" [routerLink]="'follow/followers'">
+        <i class="fas fa-users fa-2x"></i>
+        <span class="menu-item-text">Followers</span>
+    </li>
+    <li class="menu-item" [routerLink]="'follow/followings'">
+        <i class="fas fa-users fa-2x"></i>
+        <span class="menu-item-text">Followings</span>
+    </li>
+    <li class="menu-item" [routerLink]="'settings'">
+        <i class="fas fa-sliders-h fa-2x"></i>
+        <span class="menu-item-text">Settings</span>
+    </li>
+</ol>
+</div>

@@ -1,0 +1,22 @@
+<div class="settings">
+    <form [formGroup]="changePasswordGroup" class="change-password-form">
+        <div class="form-group">
+            <label>Current password:</label>
+            <input type="password" formControlName="password" class="form-control" required>
+          </div>
+        
+        <div formGroupName="passwords">
+            <div class="form-group">
+                <label>New password:</label>
+                <input type="password" formControlName="newPassword" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Confirm password:</label>
+                <input type="password" formControlName="confPassword" class="form-control" required>
+              </div>
+
+        </div>
+    </form>
+    <button class="btn btn-success change" (click)="changePassword()">Change Password</button>
+    <button class="btn btn-danger delete" (click)="deleteAccount()">Delete Account</button>
+</div>

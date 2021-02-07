@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-body">
+      <h3 class="full-name">{{ user.firstName + " " + user.lastName }}</h3>
+      <img class="profile-avatar"[src]="getImgUrl()">
+      <div class="email">Email: {{ user.email }}</div>
+      <div class="gender">Gender: {{ user.gender }}</div>
+      <div class="city" *ngIf="user.city">City: {{ user.city }}</div>
+      <div class="country" *ngIf="user.country">Country: {{ user.country }}</div>
+      <div class="followed" *ngIf="user.followed">Followed: {{user.followed}}</div>
+      <div class="follows" *ngIf="user.follows">Follows: {{user.follows}}</div>
+      <button class="btn btn-success submit" [routerLink]="'/edit'" *ngIf="isMyAccount">Edit</button>
+      <button class="btn btn-success" *ngIf="!isMyAccount && !isUserSubscribed" (click)="follow()">Follow</button>
+      <button class="btn btn-danger" *ngIf="!isMyAccount && isUserSubscribed" (click)="unfollow()">Unfollow</button>
+      <button class="btn btn-primary check" (click)="checkProfile()">Check Profile</button>
+    </div>
+  </div>
+  

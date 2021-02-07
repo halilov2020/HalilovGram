@@ -1,0 +1,47 @@
+.avatar{
+    border-radius:50%;
+    width: 50px;
+    height: 50px;
+}
+.username {
+    margin-left:15px;
+}
+.comment {
+    border: 1px solid black;
+}
+.comment-header {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    margin: 15px;
+}
+.comment-body{
+    margin-left:15px;
+    min-height: 50px;
+}
+.comment-footer {
+    margin-left:15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.like-true {
+    color: red;
+}
+.not-liked-span-num {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.liked-span-num {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    color:red;
+}
+.likes {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 10px;
+}
